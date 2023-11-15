@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\CargosController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\PermisosController;
@@ -44,6 +45,18 @@ Route::prefix('admin')/*->middleware('auth')*/->group(function () {
             Route::post('save', [RolesController::class, 'save'])->name('roles.save');
             Route::post('del', [RolesController::class, 'delete'])->name('roles.del');
             Route::get('select', [RolesController::class, 'ListarRolesSelect'])->name('roles.select.listar');
+    
+        });
+
+         /* *** roles *** */
+         Route::prefix('cargos')->group(function (){
+
+            Route::get('/', [CargosController::class, 'index'] )->name('cargos');
+            Route::get('all', [CargosController::class, 'listar'])->name('cargos.listar');
+            Route::get('get',[CargosController::class, 'obtener'])->name('cargos.obtener');
+            Route::post('save', [CargosController::class, 'save'])->name('cargos.save');
+            Route::post('del', [CargosController::class, 'delete'])->name('cargos.del');
+            Route::get('select', [CargosController::class, 'ListarCargosSelect'])->name('cargos.select.listar');
     
         });
 
