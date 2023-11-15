@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class rol extends Model
+class Rol extends Model
 {
     use HasFactory;
     
@@ -13,4 +13,7 @@ class rol extends Model
     protected $primaryKey = "id";
 
     protected $fillable = ['nombre'];
+
+    public $timestamps = false;
+
 }

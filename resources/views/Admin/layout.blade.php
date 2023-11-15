@@ -8,6 +8,7 @@
     <!-- Meta -->
     <meta name="description" content="Desarrollo academico itt">
     <meta name="author" content="crazysoftware">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     <title>@yield('title')</title>
@@ -16,15 +17,20 @@
     <link href="{{asset('Admin/lib/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
     <link href="{{asset('Admin/lib/Ionicons/css/ionicons.css')}}" rel="stylesheet">
     <link href="{{asset('Admin/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet">
+    <link href="{{asset('Admin/lib/datatables/jquery.dataTables.css')}}" rel="stylesheet">
+    <link href="{{asset('Admin/lib/select2/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('Admin/css/sweetalert.css')}}" rel="stylesheet">
 
     <!-- Shamcey CSS -->
     <link rel="stylesheet" href="{{asset('Admin/css/shamcey.css')}}">
+
+    @stack('css')
   </head>
 
   <body>
 
     <div class="sh-logopanel">
-      <a href="" class="sh-logo-text">ITTehuacá</a>
+      <a href="" class="sh-logo-text">ITTehuacán</a>
       <a id="navicon" href="" class="sh-navicon d-none d-xl-block"><i class="icon ion-navicon"></i></a>
       <a id="naviconMobile" href="" class="sh-navicon d-xl-none"><i class="icon ion-navicon"></i></a>
     </div><!-- sh-logopanel -->
@@ -279,7 +285,7 @@
     <div class="sh-mainpanel">
       <div class="sh-breadcrumb">
         <nav class="breadcrumb">
-          <a class="breadcrumb-item" href="route('admin.home')"><i class="fa fa-home"></i>ITTehuacán</a>
+          <a class="breadcrumb-item" href="{{route('admin.home')}}">ITTehuacán</a>
           <!-- 
           <a class="breadcrumb-item" href="index.html">UI Elements</a>
           <span class="breadcrumb-item active">Icons</span>-->
@@ -290,10 +296,11 @@
       </div><!-- sh-breadcrumb -->
       <div class="sh-pagetitle">
         <div class="input-group">
+            <!-- 
           <input type="search" class="form-control" placeholder="Search">
           <span class="input-group-btn">
             <button class="btn"><i class="fa fa-search"></i></button>
-          </span><!-- input-group-btn -->
+          </span>--><!-- input-group-btn -->
         </div><!-- input-group -->
         <div class="sh-pagetitle-left">
           <div class="sh-pagetitle-icon"><i class="@yield('icon') mg-t-3"></i></div>
@@ -308,26 +315,6 @@
         @section('contenido')
 
         @show
-        <div class="card bd-primary mg-t-20">
-          <div class="card-header bg-primary tx-white">Font Awesome Icons</div>
-          <div class="card-body pd-sm-30">
-            <p class="mg-b-35">One font, 675 Icons. In a single collection, Font Awesome is a pictographic language of web-related actions. </p>
-
-            
-
-
-          </div><!-- card-body -->
-        </div><!-- card -->
-
-        <div class="card bd-primary mg-t-20">
-          <div class="card-header bg-primary tx-white">Ionicons</div>
-          <div class="card-body pd-sm-30">
-            <p class="mg-b-35">One font, 675 Icons. In a single collection, Font Awesome is a pictographic language of web-related actions. </p>
-
-           
-          </div><!-- card-body -->
-        </div><!-- card -->
-
       </div><!-- sh-pagebody -->
 
 
@@ -341,7 +328,24 @@
     <script src="{{asset('Admin/lib/popper.js/popper.js')}}"></script>
     <script src="{{asset('Admin/lib/bootstrap/bootstrap.js')}}"></script>
     <script src="{{asset('Admin/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js')}}"></script>
+    <script src="{{asset('Admin/lib/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('Admin/lib/datatables-responsive/dataTables.responsive.js')}}"></script>
+    <script src="{{asset('Admin/lib/select2/js/select2.min.js')}}"></script>
+    <script src="{{asset('Admin/js/sweetalert.js')}}"></script>
 
     <script src="{{asset('Admin/js/shamcey.js')}}"></script>
+
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    @stack('js')
+
+
   </body>
 </html>
