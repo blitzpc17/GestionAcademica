@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use \stdClass;
 use Session;
+use DB;
 
 use App\Models\Recurso;
 use App\Models\Rol;
 use App\Models\User;
 use App\Models\Modulo;
+use App\Models\Utilidades;
 
 class UsuariosController extends Controller
 {
@@ -23,7 +25,9 @@ class UsuariosController extends Controller
                 'password' => 'required|string|max:255|min:8'               
             ];
 
-            $validador = Validator::make($r->all(), $reglas);
+            $msjval = Utilidades::MensajesValidaciones();
+
+            $validador = Validator::make($r->all(), $reglas, $msjval);
 
             if($validador->fails()){
                 return back()->withErrors($validador)->withInput();
@@ -69,15 +73,25 @@ class UsuariosController extends Controller
                 'cargoId' => 'required',
                 //user
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'password' => 'required|string|max:255|min:8',
+                'email' => 'required|email|max:255',               
                 'rolId' => 'required'
-            ];
+            ];          
 
-            $validador = Validator::make($r->all(), $reglas);
+            $messages = Utilidades::MensajesValidaciones();
+
+            $validador = Validator::make($r->all(), $reglas, $messages);
 
             if($validador->fails()){
                 return response()->json(["status" => 422, 'errors'=>$validador->errors()]);
+            }
+
+            if($r->id == null||($r->id!=null && !empty($r->password)) ){              
+
+                $rules = [ 'password' => 'required|string|min:8'];
+                $validador = Validator::make($r->all(), $rules, $messages);       
+                if($validador->fails()){
+                    return response()->json(["status" => 422, 'errors'=>$validador->errors()]);
+                }
             }
 
             $dataPersona = array(               
@@ -88,27 +102,26 @@ class UsuariosController extends Controller
                 "telefono" => $r->telefono,
                 "domicilio" => $r->domicilio,
                 "fecha_ingreso" => $r->fechaIngreso,
-                "cargos_id" => $r->fechaIngreso                
+                "cargos_id" => $r->cargoId                
             );
 
             $dataUser = array(
                 "name" => $r->name,
                 "email" => $r->email,
                 "password" => bcrypt($r->password),
-                "rol_id" => $r->rolId
+                "roles_id" => $r->rolId
             );
 
-            if($r->id==null){
-                
-                $result = Recurso::create($dataPersona);    
+            if($r->id==null){                
+                $result = Recurso::create(array_merge($dataPersona,["baja"=> 0]));    
                 $personaId = $result->id;  
-                $dataUser = array_merge($dataUser, ["personas_id"=> $personaId]);
+                $dataUser = array_merge($dataUser, ["recursos_id"=> $personaId]);
                 User::create($dataUser);
 
-            }else{
-                
-                User::where(id, $r->id)->update($dataUser);
-                Recurso::where(id, $r->personaId)->update($dataPersona);
+            }else{               
+                User::where('id', $r->id)->update($dataUser);
+                $user = User::where('id', $r->id)->first();
+                Recurso::where('id', $user->recursos_id)->update($dataPersona);
             }         
 
             return response()->json(["status" => 200, "msj"=> "ok"]);
@@ -121,14 +134,51 @@ class UsuariosController extends Controller
     
     public function home(Request $r){
         $user = Auth::user();
-        $rol = Rol::where('id', $user->rol_id)->first();
+        $rol = Rol::where('id', $user->roles_id)->first();
         /*$menu = Modulo::GenerarMenu($rol->id);*/
-    return view('Admin.Sistema.Home', compact('user', 'rol'/*, 'menu'*/));
+    return view('Admin.Sistema.Acceso.Home', compact('user', 'rol'/*, 'menu'*/));
     }
 
 
     public function gestionUsuariosSistema(){
-        return view('Admin.Sistema.Usuarios.Usuarios_Sistema');
+        $user = Auth::user();
+        $rol = Rol::where('id', $user->roles_id)->first();
+        /*$menu = Modulo::GenerarMenu($rol->id);*/
+        return view('Admin.Sistema.Usuarios.Usuarios_Sistema', compact('user', 'rol'/*, 'menu'*/));
+    }
+
+    public function listar(){
+        return DB::table('users as us')
+            ->join('roles as r', 'us.roles_id','r.id' )
+            ->join('recursos as per', 'us.recursos_id', 'per.id')
+            ->select('us.id', 'us.name as alias', 'us.email as correo', 'r.nombre as rol', 'per.baja',
+                DB::raw("CASE WHEN per.baja = 1 THEN 'DESACTIVADO' ELSE 'ACTIVO' END AS estado"))
+            ->get();
+    }
+
+    public function obtener(Request $r){
+        //usuario y personal data
+        $dataUser = DB::table('users as us')
+                    ->where('id', $r->id)
+                    ->select('us.id', 'us.name', 'us.email', 'us.recursos_id as recursoId', 'us.roles_id as rolesId')
+                    ->first();
+
+        $dataRecurso = DB::table('recursos as rec')
+                        ->where('id', $dataUser->recursoId)
+                        ->select('rec.apellido_paterno as apellidoPaterno', 'rec.apellido_materno as apellidoMaterno', 'rec.nombres as nombres',
+                        'rec.matricula', 'rec.telefono', 'rec.domicilio', 'rec.fecha_ingreso as fechaIngreso', 'rec.cargos_id as cargoId')
+                        ->first();
+
+        return response()->json(["user" => $dataUser, "recurso" => $dataRecurso]);
+    }
+
+    public function desactivar(Request $r){
+        DB::table('recursos as rec')
+            ->join('users as us', 'rec.id', 'us.recursos_id')
+            ->where('us.id', $r->id)
+            ->update(["rec.baja"=>$r->activo==1]);
+
+        return response()->json(["status" => 200, "msj"=> "ok"]);
     }
 
 

@@ -22,12 +22,13 @@ use App\Http\Controllers\ProcedimientosController;
 */
 
 Route::get('admin/login', function () {
-    return view('Admin.Sistema.Usuarios.login');
+    return view('Admin.Sistema.Acceso.login');
 })->name('admin.login');
 
+Route::post('admin/authin', [UsuariosController::class, 'authenticate'])->name('admin.auth');
 
 
-Route::prefix('admin')/*->middleware('auth')*/->group(function () {
+Route::prefix('admin')->middleware('auth')->group(function () {
 
     /* *** sistema *** */
     Route::get('home', [UsuariosController::class, 'home'])->name('admin.home');
@@ -55,7 +56,7 @@ Route::prefix('admin')/*->middleware('auth')*/->group(function () {
             Route::get('all', [CargosController::class, 'listar'])->name('cargos.listar');
             Route::get('get',[CargosController::class, 'obtener'])->name('cargos.obtener');
             Route::post('save', [CargosController::class, 'save'])->name('cargos.save');
-            Route::post('del', [CargosController::class, 'delete'])->name('cargos.del');
+            Route::post('del', [CargosController::class, 'desactivar'])->name('cargos.del');
             Route::get('select', [CargosController::class, 'ListarCargosSelect'])->name('cargos.select.listar');
     
         });
@@ -67,7 +68,7 @@ Route::prefix('admin')/*->middleware('auth')*/->group(function () {
             Route::get('all', [UsuariosController::class, 'listar'])->name('usuarios.listar');
             Route::get('get',[UsuariosController::class, 'obtener'])->name('usuarios.obtener');
             Route::post('save', [UsuariosController::class, 'save'])->name('usuarios.save');
-            Route::post('del', [UsuariosController::class, 'delete'])->name('usuarios.del');
+            Route::post('del', [UsuariosController::class, 'desactivar'])->name('usuarios.del');
         });
 
       

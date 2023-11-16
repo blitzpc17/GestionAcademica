@@ -3,47 +3,40 @@
 @section('title', 'Usuarios')
 
 @push('css')
-    <style>
-        .table button{
-            width:32px;
-            height:32px;
-            border-radius:10px;
-            cursor:pointer;
-        }
-
-
-
-
-    </style>
+   
 @endpush
 
-
-@section('icon', 'icon ion-grid')
-@section('title-padre', 'Sistema')
-@section('title-hijo', 'Usuarios')
-
 @section('bread')
-    <a class="breadcrumb-item" href="#">Sistema</a>
-    <span class="breadcrumb-item active">Usuarios</span>
+    <li class="breadcrumb-item"><a href="#">ITTehuacán</a></li>
+    <li class="breadcrumb-item active">Sistema</li>
+    <li class="breadcrumb-item active">Acceso</li>
+    <li class="breadcrumb-item active">Usuarios</li>
 @endsection
+
+@section('nombreSeccion', 'Usuarios')
 
 @section('contenido')
 
 <div class="card bd-primary mg-t-20">
           <div class="card-header bg-primary tx-white">Captura y consulta</div>
           <div class="card-body pd-sm-30">  
-            <div class="col-sm-6 col-md-3">
-                <button onClick="nuevo()" class="btn btn-primary btn-block mg-b-10 mb-4"><i class="fa fa-plus mg-r-10"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Agregar registro</font></font></button>          
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <button onClick="nuevo()" class="btn btn-primary">
+                        <i class="fa fa-plus mg-r-10"></i> Nuevo Registro</button>          
+                </div>
             </div>
+           
             <div class="table-wrapper">
               <table style="width:100%;" id="tb-registros" class="table display responsive nowrap">
                 <thead>
                   <tr>
                     <th class="wd-5p">#</th>
-                    <th class="wd-20p">Correo</th>
-                    <th class="wd-20">Rol</th>
-                    <th class="wd-20">Estado</th>
-                    <th class="wd-15p">Acciones</th>
+                    <th class="wd-25p">Alias</th>
+                    <th class="wd-25p">Correo</th>
+                    <th class="wd-20p">Rol</th>
+                    <th class="wd-15p">Estado</th>
+                    <th class="wd-10p">Acciones</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -58,118 +51,119 @@
         <!-- modal -->
 
         <!-- Modal -->
-
- <!-- LARGE MODAL -->
- <div id="modaldemo3" class="modal d-block pos-static">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content tx-size-sm">
-              <div class="modal-header pd-x-20">
-                <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Message Preview</h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body pd-x-20">
-                <h4 class=" lh-3 mg-b-20"><a href="" class="tx-inverse hover-primary">Why We Use Electoral College, Not Popular Vote</a></h4>
-                <p class="mg-b-5">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </p>
-              </div><!-- modal-body -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-success pd-x-20">Save changes</button>
-                <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div><!-- modal-dialog -->
-        </div><!-- modal -->
-
-        <div class="modal fade" id="md-registro">
-            <div class="modal-dialog modal-lg" role="document">
+        <div class="modal fade" id="md-registro" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-lg
+            " role="document">
                 <div class="modal-content">
-                        <div class="modal-header pd-y-20 pd-x-25">
+                        <div class="modal-header">
                                 <h5 class="modal-title">Modal title</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                             </div>
-                    <div class="modal-body pd-25">
-                        <div class="container-fluid">
+                    <div class="modal-body">
+                        <div class="container-fluid">                           
                             
                             <form id="frm-registro">
                                 <input type="hidden" name="id" id="id">
+                                <div class="row">
 
-                                <div class="form-group">
-                                    <label for="">Nombre(s):</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">A. Paterno:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">A. Materno:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Domicilio:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Matricula:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Cargo:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Fecha ingreso:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="wd-200">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="icon ion-calendar tx-16 lh-0 op-6"></i></span>
-                                        <input type="text" class="form-control fc-datepicker" placeholder="MM/DD/YYYY">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Nombre(s):</label>
+                                            <input type="text" name="nombres" id="nombres" class="form-control" placeholder="">
+                                            <small id="nombres_err" class="text-warning">Help text</small>
+                                        </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">A. Paterno:</label>
+                                            <input type="text" name="apellidoPaterno" id="apellidoPaterno" class="form-control" placeholder="">
+                                            <small id="apellidoPaterno_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">A. Materno:</label>
+                                            <input type="text" name="apellidoMaterno" id="apellidoMaterno" class="form-control" placeholder="">
+                                            <small id="apellidoMaterno_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Télefono:</label>
+                                            <input type="text" name="telefono" id="telefono" class="form-control" placeholder="">
+                                            <small id="telefono_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Matrícula:</label>
+                                            <input type="text" name="matricula" id="matricula" class="form-control" placeholder="">
+                                            <small id="matricula_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="">Domicilio:</label>
+                                            <input type="text" name="domicilio" id="domicilio" class="form-control" placeholder="">
+                                            <small id="domicilio_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Fecha ingreso:</label>
+                                            <div class="input-group date" id="fechaIngresoAux" data-target-input="nearest">
+                                                <input id="fechaIngreso" name="fechaIngreso" type="text" class="form-control datetimepicker-input" data-target="#fechaIngresoAux"/>
+                                                <div class="input-group-append" data-target="#fechaIngresoAux" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                            <small id="fechaIngreso_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Cargo:</label>
+                                            <select id="cargosId" name="cargoId" class="form-control select2" style="width: 100%;">
+                                                <option value="-1">Seleccione una opción</option>
+                                            </select>
+                                            <small id="cargoId_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Alias:</label>
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="">
+                                            <small id="name_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Correo electronico:</label>
+                                            <input type="text" name="email" id="email" class="form-control" placeholder="">
+                                            <small id="email_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Contraseña:</label>
+                                            <input type="text" name="password" id="password" class="form-control" placeholder="">
+                                            <small id="password_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Rol:</label>
+                                            <select id="rolId" name="rolId" class="form-control select2" style="width: 100%;">
+                                                <option value="-1">Seleccione una opción</option>
+                                            </select>
+                                            <small id="rolId_err" class="text-warning">Help text</small>
+                                        </div>
+                                    </div>
+
                                 </div>
-
-
-                                <div class="form-group">
-                                    <label for="">Alias:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Correo:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Contraseña:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Rol:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
-                                </div>
-
+                                
                                 
 
                         </div>
@@ -200,11 +194,15 @@
 
         $('#frm-registro').on('submit', function(e){
             e.preventDefault();
-
             var formData = new FormData(this);
-
+            const fechaIngreso = moment($('#fechaIngreso').val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+            formData.append('fechaIngreso', fechaIngreso)
             save(formData);
 
+        });
+
+        $('#fechaIngresoAux').datetimepicker({
+            format: 'DD-MM-YYYY'
         });
 
 
@@ -220,13 +218,24 @@
     function ver(id){
         $.ajax({
             type: "get",
-            url: "{{route('roles.obtener')}}",
+            url: "{{route('usuarios.obtener')}}",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 limpiar();
-                $('#nombre').val(res.nombre);
-                $('#id').val(res.id)
+                $('#nombres').val(res.recurso.nombres);
+                $('#apellidoPaterno').val(res.recurso.apellidoPaterno);
+                $('#apellidoMaterno').val(res.recurso.apellidoMaterno);
+                $('#matricula').val(res.recurso.matricula);
+                $('#telefono').val(res.recurso.telefono);
+                $('#domicilio').val(res.recurso.domicilio);
+                $('#fechaIngreso').val(res.recurso.fechaIngreso);
+                $('#cargosId').val(res.recurso.cargoId).trigger('change');                
+                $('#name').val(res.user.name);
+                $('#email').val(res.user.email);
+                $('#password').val(null);
+                $('#rolId').val(res.user.rolesId).trigger('change');
+                $('#id').val(res.user.id)
                 $('.modal-title').text('Modificar registro')
                 $('#md-registro').modal('toggle')
             }
@@ -237,7 +246,7 @@
     function listar(){
         $.ajax({
             type: "get",
-            url: "{{route('roles.listar')}}",
+            url: "{{route('usuarios.listar')}}",
             success: function (res) {
                 dibujarData(res)
             }
@@ -250,19 +259,23 @@
             $('#tb-registros tbody').empty();
         }
         $.each(data, function (i, val) { 
+            console.log(val)
             const row = `<tr>
                             <td>${i+1}</td>
-                            <td>${val.nombre}</td>
-                            <td>
+                            <td>${val.alias}</td>
+                            <td>${val.correo}</td>
+                            <td>${val.rol}</td>
+                            <td>${val.estado}</td>
+                            <td>                            
                                 <button class="btn btn-icon btn-warning" onclick="ver(${val.id})"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-icon btn-danger" onclick="eliminar(${val.id})"><i class="fa fa-trash"></i></button>                  
+                                <button class="btn btn-icon btn-${val.baja == 1? 'primary':'danger'}" onclick="eliminar(${val.id}, ${val.baja==0? 1:0})"><i class="fa fa-${val.baja == 1? 'thumbs-up':'thumbs-down'}"></i></button>                  
                             </td>
                         </tr>`
             $('#tb-registros tbody').append(row);
         });
         tabla = $('#tb-registros').DataTable({
             "language": {
-                "url": "{{asset('Admin/js/json/DataTables-Spanish.json')}}"
+                "url": "{{asset('Admin/json/DataTables-Spanish.json')}}"
             },
         });
     }
@@ -270,7 +283,7 @@
     function save(form){
         $.ajax({
                 method: "POST",
-                url: "{{route('roles.save')}}",
+                url: "{{route('usuarios.save')}}",
                 data: form,
                 contentType: false,
                 cache:false,
@@ -317,22 +330,24 @@
 
     }
 
-    function eliminar(id){
+    function eliminar(id, accion){
         let data = null;
+        const txt = accion==0?"ACTIVAR":"DESACTIVAR";
         swal.fire({
             icon:"warning",
             title:"Advertencia",
             showDenyButton: true,
-            text:"¿Desea eliminar el registro?",
+            text:"¿Desea "+txt+" el registro?",
             confirmButtonText:"Si",
             denyButtonText:"No"
         }).then((value)=>{
             if(!value.isConfirmed)return;
             var formData = new FormData();
             formData.append('id',id);
+            formData.append('activo', accion);
             $.ajax({
                 method: "POST",
-                url: "{{route('roles.del')}}",
+                url: "{{route('usuarios.del')}}",
                 data: formData,
                 contentType: false,
                 cache:false,
@@ -346,7 +361,7 @@
                     if(res.status === 200){
                         tipo = "success";
                         titulo = "¡Exito!"
-                        msj = "Registro eliminado correctamente."
+                        msj = "Registro "+(accion==0?"ACTIVADO":"DESACTIVADO")+" correctamente."
                     }else if(res.status === 500){
                         tipo = "error";
                         titulo = "¡Oh no!"
@@ -372,7 +387,18 @@
     }
 
     function limpiar(){
-        $('#nombre').val(null)
+        $('#nombres').val(null);
+        $('#apellidoPaterno').val(null);
+        $('#apellidoMaterno').val(null);
+        $('#matricula').val(null);
+        $('#telefono').val(null);
+        $('#domicilio').val(null);
+        $('#fechaIngreso').val(null);
+        $('#cargosId').val(-1).trigger('change');        
+        $('#name').val(null);
+        $('#email').val(null);
+        $('#password').val(null);
+        $('#rolId').val(-1).trigger('change');
         $('#id').val(null)           
         LimpiarValidaciones();     
     }
@@ -380,6 +406,8 @@
     function reiniciar(){        
         limpiar();
         listar();
+        listarCargos();
+        listarRoles();
     }
 
     function LimpiarValidaciones(){
@@ -390,12 +418,38 @@
         $('#'+ctrlname+'_err').text(msj)
     }
 
+    function listarRoles(){
+        $.ajax({
+            type: "GET",
+            url: "{{route('roles.select.listar')}}",
+            dataType: "json",
+            success: function (res) {
+                $.each(res, function (i, val) { 
+                    $('#rolId').append(`<option value="${val.id}" >${val.text}</option>`);
+                });
+                $('#rolId').val(-1)
+            }
+        });     
+    }
+
+    function listarCargos(){
+        $.ajax({
+            type: "GET",
+            url: "{{route('cargos.select.listar')}}",
+            dataType: "json",
+            success: function (res) {
+                $.each(res, function (i, val) { 
+                    $('#cargosId').append(`<option value="${val.id}" >${val.text}</option>`);
+                });
+                $('#cargosId').val(-1)
+            }
+        });
+      
+    }
+
     
 
 
 
 </script>
 @endpush
-
-
-
