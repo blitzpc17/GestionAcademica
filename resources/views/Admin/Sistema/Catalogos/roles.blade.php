@@ -3,38 +3,30 @@
 @section('title', 'Roles')
 
 @push('css')
-    <style>
-        .table button{
-            width:32px;
-            height:32px;
-            border-radius:10px;
-            cursor:pointer;
-        }
-
-
-
-
-    </style>
+   
 @endpush
 
 
-@section('icon', 'icon ion-grid')
-@section('title-padre', 'Catálogos')
-@section('title-hijo', 'Roles')
-
 @section('bread')
-    <a class="breadcrumb-item" href="#">Catálogos</a>
-    <span class="breadcrumb-item active">Roles</span>
+    <li class="breadcrumb-item"><a href="#">ITTehuacán</a></li>
+    <li class="breadcrumb-item active">Sistema</li>
+    <li class="breadcrumb-item active">Catalógos</li>
+    <li class="breadcrumb-item active">Roles</li>
 @endsection
+
+@section('nombreSeccion', 'Roles')
 
 @section('contenido')
 
 <div class="card bd-primary mg-t-20">
           <div class="card-header bg-primary tx-white">Captura y consulta</div>
           <div class="card-body pd-sm-30">  
-            <div class="col-sm-6 col-md-3">
-                <button onClick="nuevo()" class="btn btn-primary btn-block mg-b-10 mb-4"><i class="fa fa-plus mg-r-10"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Agregar registro</font></font></button>          
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <button onClick="nuevo()" class="btn btn-primary"><i class="fa fa-plus mg-r-10"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Agregar registro</font></font></button>          
+                </div>
             </div>
+           
             <div class="table-wrapper">
               <table style="width:100%;" id="tb-registros" class="table display responsive nowrap">
                 <thead>
@@ -166,7 +158,7 @@
         });
         tabla = $('#tb-registros').DataTable({
             "language": {
-                "url": "{{asset('Admin/js/json/DataTables-Spanish.json')}}"
+                "url": "{{asset('Admin/json/DataTables-Spanish.json')}}"
             },
         });
     }

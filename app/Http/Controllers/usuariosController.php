@@ -58,11 +58,15 @@ class UsuariosController extends Controller
     public function save(Request $r){
         try{
             $reglas = [
-                //persona
+                //persona              
+                'apellidoPaterno' => 'required|string|max:255',
+                'apellidoMaterno' => 'required|string|max:255',
                 'nombres' => 'required|string|max:255',
-                'apellidos' => 'required|string|max:255',
-                'fechaNacimiento' => 'required|date',
-                'sexo' => 'required|string|size:1',
+                'matricula' => 'required|string|min:8',
+                'telefono' => 'required|string|max:13',
+                'domicilio' => 'required|string|max:255',
+                'fechaIngreso' => 'required|date',
+                'cargoId' => 'required',
                 //user
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
@@ -76,24 +80,27 @@ class UsuariosController extends Controller
                 return response()->json(["status" => 422, 'errors'=>$validador->errors()]);
             }
 
-            $dataPersona = array(
+            $dataPersona = array(               
+                "apellido_paterno" => $r->apellidoPaterno,
+                "apellido_materno" => $r->apellidoMaterno,
                 "nombres" => $r->nombres,
-                "apellidos" => $r->apellidos,
-                "fecha_nacimiento" => $r->fechaNacimiento,
-                "sexo" => $r->sexo                
+                "matricula" => $r->matricula,
+                "telefono" => $r->telefono,
+                "domicilio" => $r->domicilio,
+                "fecha_ingreso" => $r->fechaIngreso,
+                "cargos_id" => $r->fechaIngreso                
             );
 
             $dataUser = array(
                 "name" => $r->name,
                 "email" => $r->email,
                 "password" => bcrypt($r->password),
-               // "personas_id" => $result->id,
                 "rol_id" => $r->rolId
             );
 
             if($r->id==null){
                 
-                $result = Persona::create($dataPersona);    
+                $result = Recurso::create($dataPersona);    
                 $personaId = $result->id;  
                 $dataUser = array_merge($dataUser, ["personas_id"=> $personaId]);
                 User::create($dataUser);
@@ -101,7 +108,7 @@ class UsuariosController extends Controller
             }else{
                 
                 User::where(id, $r->id)->update($dataUser);
-                Persona::where(id, $r->personaId)->update($dataPersona);
+                Recurso::where(id, $r->personaId)->update($dataPersona);
             }         
 
             return response()->json(["status" => 200, "msj"=> "ok"]);
@@ -116,12 +123,12 @@ class UsuariosController extends Controller
         $user = Auth::user();
         $rol = Rol::where('id', $user->rol_id)->first();
         /*$menu = Modulo::GenerarMenu($rol->id);*/
-    return view('Admin.sistema.home', compact('user', 'rol'/*, 'menu'*/));
+    return view('Admin.Sistema.Home', compact('user', 'rol'/*, 'menu'*/));
     }
 
 
     public function gestionUsuariosSistema(){
-        return view('Admin.sistema.usuarios.usuarios_sistema');
+        return view('Admin.Sistema.Usuarios.Usuarios_Sistema');
     }
 
 
