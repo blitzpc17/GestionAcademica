@@ -66,19 +66,19 @@
                                 <div class="form-group">
                                     <label for="">Iso:</label>
                                     <input type="text" name="iso" id="iso" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
+                                    <small id="iso_err" class="text-warning">Help text</small>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Código:</label>
                                     <input type="text" name="codigo" id="codigo" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
+                                    <small id="codigo_err" class="text-warning">Help text</small>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Formato:</label>
                                     <input type="text" name="formato" id="formato" class="form-control" placeholder="">
-                                    <small id="nombre_err" class="text-warning">Help text</small>
+                                    <small id="formato_err" class="text-warning">Help text</small>
                                 </div>
 
                                 <div class="form-group">
@@ -87,7 +87,7 @@
                                         <input type="file" class="custom-file-input" id="layout" name="layout">
                                         <label class="custom-file-label" for="customFile">Subir archivo</label>
                                     </div>
-                                    <small id="nombre_err" class="text-warning">Help text</small>
+                                    <small id="layout_err" class="text-warning">Help text</small>
                                 </div>
 
                                 <div class="form-group">
@@ -96,7 +96,7 @@
                                         <input type="file" class="custom-file-input" id="entregable" name="entregable">
                                         <label class="custom-file-label" for="customFile">Subir archivo</label>
                                     </div>
-                                    <small id="nombre_err" class="text-warning">Help text</small>
+                                    <small id="entregable_err" class="text-warning">Help text</small>
                                 </div>
 
                         </div>
@@ -187,8 +187,8 @@
                             <td>
                                 <button class="btn btn-icon btn-warning" onclick="ver(${val.id})"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-icon btn-danger" onclick="eliminar(${val.id})"><i class="fa fa-trash"></i></button>   
-                                <button class="btn btn-icon btn-secondary" onclick="download('${val.layout}')"><i class="fa fa-file-pdf"></i></button> 
-                                <button class="btn btn-icon btn-success" onclick="descarga(${val.id})"><i class="fa fa-file-pdf"></i></button>                
+                                <a class="btn btn-icon btn-secondary" href="{{route('procedimientos.download')}}?id=${val.id}&tipo=l" ><i class="fa fa-file-pdf"></i></a>
+                                <a class="btn btn-icon btn-success" href="{{route('procedimientos.download')}}?id=${val.id}&tipo=e" ><i class="fa fa-file-pdf"></i></a>            
                             </td>
                         </tr>`
             $('#tb-registros tbody').append(row);
@@ -239,6 +239,7 @@
                                 $('#md-registro').modal('toggle')
                                 reiniciar();
                             }else if(res.status === 422){
+                                LimpiarValidaciones();
                                 $.each(res.errors, function (i, val) { 
                                      setError(i, val);
                                 });
@@ -308,6 +309,8 @@
         $('#iso').val(null)
         $('#codigo').val(null)
         $('#formato').val(null)
+        $('#layout').val(null)
+        $('#entregable').val(null)
         $('#id').val(null)           
         LimpiarValidaciones();     
     }
@@ -324,18 +327,7 @@
     function setError(ctrlname, msj){
         $('#'+ctrlname+'_err').text(msj)
     }
-
-    function download(archivo){
-        $.ajax({
-            type: "POST",
-            url: "{{route('procedimientos.download')}}",
-            data: {nombreArchivo:archivo},
-            dataType: "json",
-            success: function (res) {
-                   console.log(res) 
-            }
-        });
-    }
+  
 
     
 

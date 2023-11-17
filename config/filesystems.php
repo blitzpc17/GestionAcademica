@@ -44,9 +44,9 @@ return [
             'throw' => false,
         ],
 
-        'procedimientos' => [
+        'archivos' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/Admin/Files/Procedimientos'),
+            'root' => storage_path('app/public/Admin/Files'),
             /*'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,*/

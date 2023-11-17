@@ -104,7 +104,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::get('get',[ProcedimientosController::class, 'obtener'])->name('procedimientos.obtener');
             Route::post('save', [ProcedimientosController::class, 'save'])->name('procedimientos.save');
             Route::post('del', [ProcedimientosController::class, 'delete'])->name('procedimientos.del');
-            Route::post('recurso/download', [ProcedimientosController::class, 'DescargarArchivos'])->name('procedimientos.download');
+            Route::get('recurso/download', [ProcedimientosController::class, 'DescargarArchivos'])->name('procedimientos.download');
         });
    
 

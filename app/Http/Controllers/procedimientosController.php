@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use DB;
 
 use App\Models\Modulo;
@@ -28,34 +29,47 @@ class ProcedimientosController extends Controller
             $validador = Validator::make($r->all(), [
                 'iso' => 'required|string|max:10',
                 'codigo' => 'required|string|max:255',
-                'formato' => 'required|string|max:255',
-                'layout' => 'required|mimes:pdf,doc,docx'
+                'formato' => 'required|string|max:255',            
             ], $msjval);
 
             if($validador->fails()){
                 return response()->json(["status" => 422, 'errors'=>$validador->errors()]);
             }
 
-            //subir layout
-            $rutalayout = "Admin/Files/Procedimientos/{$r->codigo}";
-            $layout = $r->layout;
-            $nombreLayout = rand() . '.' . $layout->getClientOriginalExtension();    
-            if($r->id==null || $layout!=null){              
-                
-                /*if(!Storage::exists($rutalayout)){
-                    Storage::makeDirectory($rutalayout, 0775, true);
-                }*/
-
-               // $layout->move(public_path($rutalayout), $nombreLayout);  
-               Storage::disk('procedimientos')->put($nombreLayout, $layout);             
-            }
-
             $data = array(
                 'iso' => $r->iso,
                 'codigo' => $r->codigo,
                 'formato' => $r->formato,
-                'layout' => $nombreLayout
-            );          
+            ); 
+
+            //subir layout
+           
+            $layout = $r->layout;           
+            if($r->id ==null || $layout!=null){   
+                $rules = ['layout' => 'required|mimes:pdf,doc,docx'];
+                $validateFile = Validator::make($r->all(), $rules, $msjval);
+                if($validateFile->fails()){
+                    return response()->json(["status" => 422, 'errors'=>$validateFile->errors()]);
+                }
+                $rutalayout = "Procedimientos";
+                $nombreLayout = rand() . '.' . $layout->getClientOriginalExtension();         
+                Storage::disk('archivos')->putFileAs($rutalayout, $layout, $nombreLayout); 
+                $data = array_merge($data, ['layout' => $nombreLayout]);            
+            }
+
+            //subir entregable            
+            $entregable = $r->entregable;            
+            if($entregable!=null){  
+                $rules = ['entregable' => 'required|mimes:pdf,doc,docx'];
+                $validateFile = Validator::make($r->all(), $rules, $msjval);
+                if($validateFile->fails()){
+                    return response()->json(["status" => 422, 'errors'=>$validateFile->errors()]);
+                }
+                $rutaentregable = "Procedimientos";
+                $nombreEntregable = rand() . '.' . $entregable->getClientOriginalExtension();          
+                Storage::disk('archivos')->putFileAs($rutaentregable, $entregable, $nombreEntregable);    
+                $data = array_merge($data, ['entregable' => $nombreEntregable]);             
+            }                     
 
             if($r->id==null){
                Procedimiento::create($data);
@@ -81,8 +95,12 @@ class ProcedimientosController extends Controller
 
     public function delete(Request $r){
         try{
+            $procedimiento = Procedimiento::where('id',$r->id)->first();
             Procedimiento::where('id', $r->id)->delete();
-            //eliminar archivo
+            //eliminar archivos
+            $rutaArchivo = "Procedimientos";
+            Storage::disk('archivos')->deleteDirectory($rutaArchivo);
+
             return response()->json(["status"=>200, "msj"=>"success"]);
         }catch (QueryException $ex) {
             Log::error('Error en la clase ' . __CLASS__ . ' en la línea ' . __LINE__ . ': ' . $ex->getMessage());       
@@ -100,22 +118,29 @@ class ProcedimientosController extends Controller
 
 
     public function DescargarArchivos(Request $r){
-        
-        $rutaArchivo = 'public/Admin/Files/Procedimientos/COD-23-RCUI/' . $r->nombreArchivo;
-       // dd($rutaArchivo);
-        return Storage::download($rutaArchivo);
-        dd(Storage::disk('public')->exists($rutaArchivo));
+        try{
+            $procedimiento = Procedimiento::where('id', $r->id)->first();
+            $rutaArchivo = "Procedimientos/";
+            if($r->tipo=="l"&& $procedimiento->layout!=null){
+                $rutaArchivo.= $procedimiento->layout;
+            }elseif($r->tipo=="e" && $procedimiento->entregable!=null){
+                $rutaArchivo.= $procedimiento->entregable;
+            }else{
+                echo 'No se encuentra el archivo.';
+                return;
+            }    
+            if(Storage::disk('archivos')->exists($rutaArchivo)){
+                return Storage::disk('archivos')->download($rutaArchivo);
+            }           
 
-        if (Storage::disk('public')->exists('Admin/Files/Procedimientos/COD-23-RCUI/{$r->nombreArchivo}') ){
-            return response()->json(["status" => 400, "msj" => "No se encontro el archivo solicitado." ]);
+        }catch(Exception $ex ){
+            Log::error('Error en la clase ' . __CLASS__ . ' en la línea ' . __LINE__ . ': ' . $ex->getMessage());
+            echo 'No se encuentra el archivo.';
         }
-     /*   if (file_exists($rutaArchivo)) {
-            return response()->download($rutaArchivo, $r->nombreArchivo);
-        } else {          
-            return response()->json(["status" => 400, "msj" => "No se encontro el archivo solicitado." ]);
-        }*/
-
-        //return Storage::download('file.jpg');
+      
+        
+        
+   
     }
 
 

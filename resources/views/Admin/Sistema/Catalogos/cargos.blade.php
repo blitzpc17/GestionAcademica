@@ -202,6 +202,7 @@
                                 $('#md-registro').modal('toggle')
                                 reiniciar();
                             }else if(res.status === 422){
+                                LimpiarValidaciones();
                                 $.each(res.errors, function (i, val) { 
                                      setError(i, val);
                                 });
