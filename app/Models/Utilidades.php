@@ -10,7 +10,8 @@ class Utilidades {
             "string" => "El valor de ser de tipo Texto.",
             "max" => "Máximo :min carácteres.",
             "min" => "Mínimo :min carácteres.",
-            "date" => "El valor debe ser de tipo Fecha."
+            "date" => "El valor debe ser de tipo Fecha.",
+            "mimes" => "Solo se permiten archivos .pdf, .doc, .docx."
         );
     }
 }

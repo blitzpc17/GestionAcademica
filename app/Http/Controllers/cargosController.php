@@ -10,6 +10,7 @@ use DB;
 use App\Models\Modulo;
 use App\Models\Rol;
 use App\Models\Cargo;
+use App\Models\Utilidades;
 
 class CargosController extends Controller
 {
@@ -22,9 +23,11 @@ class CargosController extends Controller
 
     public function save(Request $r){
         try{
+            $msjVal = Utilidades::MensajesValidaciones();
+
             $validador = Validator::make($r->all(), [
                 'nombre' => 'required|string|max:255'
-            ]);
+            ], $msjVal);          
 
             if($validador->fails()){
                 return response()->json(["status" => 422, 'errors'=>$validador->errors()]);
