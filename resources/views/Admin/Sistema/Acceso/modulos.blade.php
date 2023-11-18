@@ -81,6 +81,12 @@
                                     <small id="icono_err" class="text-warning">Help text</small>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="">Módulo padre:</label>
+                                    <select name="modulo" id="modulo" class="form-control"></select>
+                                    <small id="modulo_err" class="text-warning">Help text</small>
+                                </div>
+
                              
 
                         </div>
@@ -136,6 +142,7 @@
             dataType: "json",
             success: function (res) {
                 limpiar();
+                $('#modulo').val(res.modulo_padre_id??-1).trigger('change');
                 $('#ruta').val(res.ruta);
                 $('#icono').val(res.icono);
                 $('#nombre').val(res.nombre);
@@ -166,7 +173,7 @@
             const row = `<tr>
                             <td>${i+1}</td>
                             <td>${val.nombre}</td>
-                            <td>${val.ruta}</td>
+                            <td>${val.ruta??""}</td>
                             <td>
                                 <button class="btn btn-icon btn-warning" onclick="ver(${val.id})"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-icon btn-danger" onclick="eliminar(${val.id})"><i class="fa fa-trash"></i></button>                                    
@@ -287,6 +294,7 @@
     }
 
     function limpiar(){
+        $('#modulo').val(-1)
         $('#nombre').val(null)
         $('#icono').val(null)
         $('#ruta').val(null)       
@@ -297,6 +305,7 @@
     function reiniciar(){        
         limpiar();
         listar();
+        listarModulos();
     }
 
     function LimpiarValidaciones(){
@@ -305,6 +314,23 @@
 
     function setError(ctrlname, msj){
         $('#'+ctrlname+'_err').text(msj)
+    }
+
+    function listarModulos(){
+        $.ajax({
+            type: "GET",
+            url: "{{route('modulos.select.listar')}}",
+            dataType: "json",
+            success: function (res) {
+                $('#modulo').empty();
+                $('#modulo').append('<option value="-1">Seleccionar módulo</option>');
+                $.each(res, function (i, val) { 
+                    $("#modulo").append(`<option value="${val.id}">${val.text}</option>}`);
+                });
+
+                $("#modulo").val(-1).trigger('change')
+            }
+        });
     }
   
 

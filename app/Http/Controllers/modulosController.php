@@ -37,7 +37,13 @@ class ModulosController extends Controller
                 'nombre' => $r->nombre,
                 'ruta' => $r->ruta,
                 'icono' => $r->icono,
-            );                   
+            );    
+            
+            if($r->modulo!=-1){
+                $data = array_merge($data, ["modulo_padre_id"=> $r->modulo]);
+            }else{
+                $data = array_merge($data, ["modulo_padre_id"=> null]);
+            }
 
             if($r->id==null){
                Modulo::create($data);

@@ -12,6 +12,6 @@ class Modulo extends Model
     protected $table =  "modulos";
     protected $primaryKey = "id";
 
-    protected $fillable = ['nombre', 'ruta', 'icono'];
+    protected $fillable = ['nombre', 'ruta', 'icono', 'modulo_padre_id'];
 
 }
