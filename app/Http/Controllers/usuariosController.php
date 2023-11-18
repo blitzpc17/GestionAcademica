@@ -135,16 +135,16 @@ class UsuariosController extends Controller
     public function home(Request $r){
         $user = Auth::user();
         $rol = Rol::where('id', $user->roles_id)->first();
-        /*$menu = Modulo::GenerarMenu($rol->id);*/
-    return view('Admin.Sistema.Acceso.Home', compact('user', 'rol'/*, 'menu'*/));
+        $menu = Modulo::GenerarMenu($rol->id);
+        return view('Admin.Sistema.Acceso.Home', compact('user', 'rol', 'menu'));
     }
 
 
     public function gestionUsuariosSistema(){
         $user = Auth::user();
         $rol = Rol::where('id', $user->roles_id)->first();
-        /*$menu = Modulo::GenerarMenu($rol->id);*/
-        return view('Admin.Sistema.Usuarios.Usuarios_Sistema', compact('user', 'rol'/*, 'menu'*/));
+        $menu = Modulo::GenerarMenu($rol->id);
+        return view('Admin.Sistema.Usuarios.Usuarios_Sistema', compact('user', 'rol', 'menu'));
     }
 
     public function listar(){

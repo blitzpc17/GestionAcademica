@@ -16,8 +16,8 @@ class RolesController extends Controller
     public function index(){
         $user = Auth::user();
         $rol = Rol::where('id', $user->roles_id)->first();
-        /*$menu = Modulo::GenerarMenu($rol->id);*/
-        return view('Admin.sistema.catalogos.roles', compact('user', 'rol', /*'menu'*/));
+        $menu = Modulo::GenerarMenu($rol->id);
+        return view('Admin.sistema.catalogos.roles', compact('user', 'rol', 'menu'));
     }
 
     public function save(Request $r){

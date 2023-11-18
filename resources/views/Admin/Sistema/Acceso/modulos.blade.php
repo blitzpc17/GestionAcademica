@@ -71,7 +71,7 @@
 
                                 <div class="form-group">
                                     <label for="">Ruta:</label>
-                                    <input type="text" name="ruta" id="ruta" class="form-control" placeholder="Ej. Admin/Sistema/Modulos">
+                                    <input type="text" name="ruta" id="ruta" class="form-control" placeholder="Ej. /admin/Sistema/Modulos">
                                     <small id="ruta_err" class="text-warning">Help text</small>
                                 </div>
 
