@@ -1,6 +1,7 @@
 @extends('Admin.layout')
 
-@section('title', 'Procedimientos')
+
+@section('title', 'Permisos')
 
 @push('css')
    
@@ -9,11 +10,11 @@
 
 @section('bread')
     <li class="breadcrumb-item"><a href="#">ITTehuacán</a></li>
-    <li class="breadcrumb-item active">Procedimientos</li>
-    <li class="breadcrumb-item active">Captura y Consulta</li>
+    <li class="breadcrumb-item active">Acceso</li>
+    <li class="breadcrumb-item active">Control de permisos</li>
 @endsection
 
-@section('nombreSeccion', 'Procedimientos')
+@section('nombreSeccion', 'Control de permisos')
 
 @section('contenido')
 
@@ -31,9 +32,8 @@
                 <thead>
                   <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:15%">Iso</th>
-                    <th style="width:30%">Código</th>
-                    <th style="width:35%">Nombre</th>
+                    <th style="width:15%">Rol</th>
+                    <th style="width:30%">Modulo</th>
                     <th style="width:15%">Acciones</th>
                   </tr>
                 </thead>
@@ -64,40 +64,22 @@
                             <form id="frm-registro" enctype="multipart/form-data" >
                                 <input type="hidden" name="id" id="id">
                                 <div class="form-group">
-                                    <label for="">Iso:</label>
-                                    <input type="text" name="iso" id="iso" class="form-control" placeholder="">
-                                    <small id="iso_err" class="text-warning">Help text</small>
+                                    <label for="">Rol:</label>
+                                    <select name="rol" id="rol" class="form-control"></select>
+                                    <small id="rol_err" class="text-warning">Help text</small>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">Código:</label>
-                                    <input type="text" name="codigo" id="codigo" class="form-control" placeholder="">
-                                    <small id="codigo_err" class="text-warning">Help text</small>
-                                </div>
-
+                                    <label for="">Módulo:</label>
+                                    <select name="modulo" id="modulo" class="form-control"></select>
+                                    <small id="modulo_err" class="text-warning">Help text</small>
+                                </div> 
+                                
                                 <div class="form-group">
-                                    <label for="">Formato:</label>
-                                    <input type="text" name="formato" id="formato" class="form-control" placeholder="">
-                                    <small id="formato_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Layout:</label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="layout" name="layout">
-                                        <label class="custom-file-label" for="customFile">Subir archivo</label>
-                                    </div>
-                                    <small id="layout_err" class="text-warning">Help text</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Entregable:</label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="entregable" name="entregable">
-                                        <label class="custom-file-label" for="customFile">Subir archivo</label>
-                                    </div>
-                                    <small id="entregable_err" class="text-warning">Help text</small>
-                                </div>
+                                    <label for="">Observación:</label>
+                                    <textarea name="observacion" id="observacion" cols="30" rows="10" class="form-control"></textarea>
+                                    <small id="observacion_err" class="text-warning">Help text</small>
+                                </div> 
 
                         </div>
                     </div>
@@ -124,7 +106,6 @@
 
         reiniciar();
 
-
         $('#frm-registro').on('submit', function(e){
             e.preventDefault();
 
@@ -147,7 +128,7 @@
     function ver(id){
         $.ajax({
             type: "get",
-            url: "{{route('procedimientos.obtener')}}",
+            url: "{{route('permisos.obtener')}}",
             data: {id:id},
             dataType: "json",
             success: function (res) {
@@ -166,7 +147,7 @@
     function listar(){
         $.ajax({
             type: "get",
-            url: "{{route('procedimientos.listar')}}",
+            url: "{{route('permisos.listar')}}",
             success: function (res) {
                 dibujarData(res)
             }
@@ -181,14 +162,11 @@
         $.each(data, function (i, val) { 
             const row = `<tr>
                             <td>${i+1}</td>
-                            <td>${val.iso}</td>
-                            <td>${val.codigo}</td>
-                            <td>${val.formato}</td>
+                            <td>${val.rol}</td>
+                            <td>${val.modulo}</td>
                             <td>
                                 <button class="btn btn-icon btn-warning" onclick="ver(${val.id})"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-icon btn-danger" onclick="eliminar(${val.id})"><i class="fa fa-trash"></i></button>   
-                                <a class="btn btn-icon btn-secondary" href="{{route('procedimientos.download')}}?id=${val.id}&tipo=l" ><i class="fa fa-file-pdf"></i></a>
-                                <a class="btn btn-icon btn-success" href="{{route('procedimientos.download')}}?id=${val.id}&tipo=e" ><i class="fa fa-file-pdf"></i></a>            
+                                <button class="btn btn-icon btn-danger" onclick="eliminar(${val.id})"><i class="fa fa-trash"></i></button>                                      
                             </td>
                         </tr>`
             $('#tb-registros tbody').append(row);
@@ -203,7 +181,7 @@
     function save(form){
         $.ajax({
                 method: "POST",
-                url: "{{route('procedimientos.save')}}",
+                url: "{{route('permisos.save')}}",
                 data: form,
                 contentType: false,
                 cache:false,
@@ -266,7 +244,7 @@
             formData.append('id',id);
             $.ajax({
                 method: "POST",
-                url: "{{route('procedimientos.del')}}",
+                url: "{{route('permisos.del')}}",
                 data: formData,
                 contentType: false,
                 cache:false,
@@ -318,6 +296,8 @@
     function reiniciar(){        
         limpiar();
         listar();
+        ListarModulosHijos();
+        ListarRoles();
     }
 
     function LimpiarValidaciones(){
@@ -326,6 +306,38 @@
 
     function setError(ctrlname, msj){
         $('#'+ctrlname+'_err').text(msj)
+    }
+
+    function ListarModulosHijos(){
+        $.ajax({
+            type: "GET",
+            url: "{{route('modulos.select.children.listar')}}",
+            dataType: "json",
+            success: function (res) {
+                $('#modulo').empty();
+                $('#modulo').append('<option value="-1">Seleccione un módulo</option>');
+                $.each(res, function (i, val) { 
+                    $('#modulo').append(`<option value="${val.id}">${val.text}</option>}`);
+                });
+                $('#modulo').val(-1).trigger('change')
+            }
+        });
+    }
+
+    function ListarRoles(){
+        $.ajax({
+            type: "GET",
+            url: "{{route('roles.select.listar')}}",
+            dataType: "json",
+            success: function (res) {
+                $('#rol').empty();
+                $('#rol').append('<option value="-1">Seleccione un rol</option>');
+                $.each(res, function (i, val) { 
+                    $('#rol').append(`<option value="${val.id}">${val.text}</option>}`);
+                });
+                $('#rol').val(-1).trigger('change')
+            }
+        });
     }
   
 

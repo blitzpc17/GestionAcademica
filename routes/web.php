@@ -81,6 +81,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::post('save', [ModulosController::class, 'save'])->name('modulos.save');
             Route::post('del', [ModulosController::class, 'delete'])->name('modulos.del');
             Route::get('select', [ModulosController::class, 'ListarModulosSelect'])->name('modulos.select.listar');
+            Route::get('select/children', [ModulosController::class, 'ListarModulosHijosSelect'])->name('modulos.select.children.listar');
+            
         });
 
 

@@ -11,7 +11,9 @@ class Utilidades {
             "max" => "Máximo :min carácteres.",
             "min" => "Mínimo :min carácteres.",
             "date" => "El valor debe ser de tipo Fecha.",
-            "mimes" => "Solo se permiten archivos .pdf, .doc, .docx."
+            "mimes" => "Solo se permiten archivos .pdf, .doc, .docx.",
+            "rol.min" => "Seleccione una opción válida.",
+            "modulo.min" => "Seleccione una opción válida."
         );
     }
 }

@@ -84,6 +84,16 @@ class ModulosController extends Controller
                 ->get();
 
     }
+
+
+    public function ListarModulosHijosSelect(Request $r){
+        return DB::table('modulos')
+                ->select('id', 'nombre as text')
+                ->where('ruta','<>', '#')
+                ->wherenotnull('ruta')
+                ->get();
+
+    }
    
 
 }
