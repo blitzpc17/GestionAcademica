@@ -199,7 +199,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" onclick="RealizarEnvio(procedimientoSeleccionadoId, rolProcedimientoId)" class="btn btn-primary">Descargar todos</button>
+                        <button type="button" onclick="DescargarZip()" class="btn btn-primary">Descargar todos</button>
                     </div>
                 </div>
             </div>
@@ -221,6 +221,7 @@
 
      let procedimientoSeleccionadoId;
      let rolProcedimientoId;
+     let procedimientoSeleccionado;
 
     $(document).ready(function () {
         console.log('Ready!')
@@ -593,6 +594,7 @@
             dataType: "json",
             success: function (res) {
                 DibujarTabla(res)
+                procedimientoSeleccionado = procedimientoId
                 $('.modal-title').text("Procedimientos recibidos")
                 $('#md-recibidos').modal('toggle')
             }
@@ -617,6 +619,11 @@
                         </tr>` 
              $('#tb-recibidos tbody').append(row);
         });
+   }
+
+   function DescargarZip(){
+        let url = "{{route('procedimientos.zip')}}?ProcedimientoId="+procedimientoSeleccionado;
+        window.open(url, '_blank');
    }
     
 

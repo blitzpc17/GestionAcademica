@@ -116,6 +116,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::get('docs/ver', [ProcedimientosController::class, 'VisualizarDocumentosUsuario'])->name('procedimientos.visualizar');
             Route::geT('docs/recibidos', [ProcedimientosController::class, 'ListarDocumentosProcedimientoInvolucrados'])->name('procedimientos.recibidos');
 
+            Route::get('recursos/zip', [ProcedimientosController::class, 'DescargaMasivaProcedimientos'])->name('procedimientos.zip');
+
         });
    
 

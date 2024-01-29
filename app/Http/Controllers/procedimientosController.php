@@ -337,6 +337,24 @@ class ProcedimientosController extends Controller
         ->get();
     }
 
+    public function DescargaMasivaProcedimientos(Request $r){
+        $procedimiento = Procedimiento::where('id', $r->ProcedimientoId)->first();
+
+        $data = DB::table('procedimientos_envios as pe')
+                ->where('pe.procedimientosId', $procedimiento->id)
+                ->select('pe.EntregableDestino')
+                ->get();
+
+        $data = $data->map(function($item){
+            return $item->EntregableDestino;
+        })->toArray();
+
+        $rutaZip = Utilidades::GenerarZip($procedimiento->iso, "seguimiento/", $data);
+
+        return response()->download($rutaZip)->deleteFileAfterSend();
+
+    }
+
 
 
 }
