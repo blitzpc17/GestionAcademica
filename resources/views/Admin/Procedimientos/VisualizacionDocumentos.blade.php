@@ -152,7 +152,7 @@
                 <td>${val.Estado}</td>
                 <td>
                     <a class="btn btn-icon btn-primary" href="{{route('procedimientos.download')}}?id=${val.ProcedimientoId}&tipo=l" ><i class="fas fa-download"></i></a>
-                    <button class="btn btn-icon btn-secondary" onclick="Ver(${val.ProcedimientoId})"><i class="fas fa-upload"></i></button>
+                    ${val.EstadoId != 3 ? `<button class="btn btn-icon btn-secondary" onclick="Ver(${val.ProcedimientoId})"><i class="fas fa-upload"></i></button>` : ''}
                 </td>
             </tr>` 
              $('#tb-registros tbody').append(row);

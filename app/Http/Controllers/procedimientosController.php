@@ -225,7 +225,7 @@ class ProcedimientosController extends Controller
                 Storage::disk('archivos')->putFileAs($rutalayout, $layout, $nombreLayout); 
                 //$data = array_merge($data, ['layout' => $nombreLayout]);            
                 //actualizacion individual
-                EnvioProcedimiento::where($r->ProcedimientoEnvioId)
+                EnvioProcedimiento::where('id',$r->EnvioId)
                 ->update([
                     "entregableDestino"    =>  $nombreLayout,
                     "estadoId"      =>  2//SUBIDO
