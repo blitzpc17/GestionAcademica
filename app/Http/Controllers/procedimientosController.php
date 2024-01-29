@@ -160,15 +160,21 @@ class ProcedimientosController extends Controller
 
     public function DescargarArchivos(Request $r){
         try{
-            $procedimiento = Procedimiento::where('id', $r->id)->first();
+            $procedimiento = null;
+            if($r->tipo==null){
+                $procedimiento = EnvioProcedimiento::where('id', $r->id)->first();
+            }else{
+                $procedimiento = Procedimiento::where('id', $r->id)->first();
+            }
+            
             $rutaArchivo = "Procedimientos/";
             if($r->tipo=="l"&& $procedimiento->layout!=null){
                 $rutaArchivo.= $procedimiento->layout;
             }elseif($r->tipo=="e" && $procedimiento->entregable!=null){
                 $rutaArchivo.= $procedimiento->entregable;
             }else{
-                echo 'No se encuentra el archivo.';
-                return;
+               //descarga de recibidos
+               $rutaArchivo.= "Seguimiento/".$procedimiento->entregableDestino;
             }    
             if(Storage::disk('archivos')->exists($rutaArchivo)){
                 return Storage::disk('archivos')->download($rutaArchivo);
@@ -312,6 +318,24 @@ class ProcedimientosController extends Controller
     }
 
 
+    public function ListarDocumentosProcedimientoInvolucrados(Request $r){
+        $user = Auth::user();
+        return DB::table('procedimientos_envios as pe',  'u.id', 'pe.usuarioId')
+        ->join('procedimientos as p', 'p.id', 'pe.procedimientosId') 
+        ->join('estados_procedimiento as ep', 'pe.estadoId', '=', 'ep.id')
+        ->join('users as u', 'pe.usuarioId',  'u.id')  
+        ->join('recursos as rec', 'u.recursos_id', 'rec.Id')
+        ->join('roles as r', 'u.roles_id', '=', 'r.id')  
+        ->where('p.Id', $r->ProcedimientoId)  
+        ->select(
+            'pe.id as ProcedimientoEnvioId',
+            DB::raw("concat(rec.nombres, ' ', rec.apellido_paterno, ' ', rec.apellido_materno) as Nombre") ,
+            'ep.id as EstadoId',
+            'ep.nombre as Estado',
+            'pe.entregableDestino'
+        )
+        ->get();
+    }
 
 
 

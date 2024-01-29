@@ -165,6 +165,47 @@
         </div>
 
 
+          <!-- Modal recibidos -->
+          <!-- Modal -->
+          <div class="modal fade" id="md-recibidos" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <br>
+                            <br>
+                        <table id="tb-recibidos" class="table" style="width:100%;">
+                            <thead>
+                                <th>No</th>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Acciones</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <br>
+                        <br>
+                            
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick="RealizarEnvio(procedimientoSeleccionadoId, rolProcedimientoId)" class="btn btn-primary">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 @endsection
 
@@ -285,6 +326,7 @@
                                 <button class="btn btn-icon btn-warning" onclick="ver(${val.ProcedimientoId})"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-icon btn-danger" onclick="eliminar(${val.ProcedimientoId})"><i class="fa fa-trash"></i></button>   
                                 <button class="btn btn-icon btn-primary" onclick="VerPreliminarEnvio(${val.RolId}, ${val.ProcedimientoId}, '${val.Iso}')"><i class="fa fa-location-arrow"></i></button>
+                                <button class="btn btn-icon btn-info" onclick="VerProcedimientosRecibidos(${val.ProcedimientoId})"><i class="fa fa-bookmark"></i></button>
                                 <a class="btn btn-icon btn-secondary" href="{{route('procedimientos.download')}}?id=${val.ProcedimientoId}&tipo=l" ><i class="fa fa-file-pdf"></i></a>
                                 <a class="btn btn-icon btn-success" href="{{route('procedimientos.download')}}?id=${val.ProcedimientoId}&tipo=e" ><i class="fa fa-file-pdf"></i></a>            
                             </td>
@@ -541,6 +583,41 @@
             },
         });
     }
+
+    function VerProcedimientosRecibidos(procedimientoId){
+
+        $.ajax({
+            type: "GET",
+            url: "{{route('procedimientos.recibidos')}}",
+            data: {ProcedimientoId:procedimientoId},
+            dataType: "json",
+            success: function (res) {
+                DibujarTabla(res)
+                $('.modal-title').text("Procedimientos recibidos")
+                $('#md-recibidos').modal('toggle')
+            }
+        });
+
+    }
+
+
+    function DibujarTabla(data){
+        $('#tb-recibidos tbody').empty();
+        $.each(data, function (i, val) {
+            const row = `<tr>
+                            <td>${i+1}</td>
+                            <td>${val.Nombre}</td>
+                            <td>${val.Estado}</td>                
+                            <td>
+                                <a class="btn btn-icon btn-primary" 
+                                    href="{{route('procedimientos.download')}}?id=${val.ProcedimientoEnvioId}" >
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </td>
+                        </tr>` 
+             $('#tb-recibidos tbody').append(row);
+        });
+   }
     
 
 

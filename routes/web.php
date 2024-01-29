@@ -114,7 +114,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::get('rol/recibidos', [ProcedimientosController::class, 'RecepcionProcedimientos'])->name('procedimientos.rol.recibidos');
             Route::get('docs/listar/rol', [ProcedimientosController::class, 'ListarDocumentosRol'])->name('procedimientos.listar.rol');
             Route::get('docs/ver', [ProcedimientosController::class, 'VisualizarDocumentosUsuario'])->name('procedimientos.visualizar');
-
+            Route::geT('docs/recibidos', [ProcedimientosController::class, 'ListarDocumentosProcedimientoInvolucrados'])->name('procedimientos.recibidos');
 
         });
    

@@ -141,6 +141,7 @@
    }
 
    function DibujarTabla(data){
+        $('#tb-registros tbody').empty();
         $.each(data, function (i, val) {
             const row = `<tr>
                 <td>${i+1}</td>
