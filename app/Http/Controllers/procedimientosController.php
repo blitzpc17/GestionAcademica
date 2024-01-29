@@ -342,6 +342,7 @@ class ProcedimientosController extends Controller
 
         $data = DB::table('procedimientos_envios as pe')
                 ->where('pe.procedimientosId', $procedimiento->id)
+                ->whereNotNull('pe.EntregableDestino')
                 ->select('pe.EntregableDestino')
                 ->get();
 
