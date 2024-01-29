@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use DateTime;
+
 
 class Utilidades {
 
@@ -16,4 +18,11 @@ class Utilidades {
             "modulo.min" => "Seleccione una opción válida."
         );
     }
+
+    public static function FormatearFecha($formatoOrigen, $fecha, $formatoFinal){
+        $fechaObjeto = DateTime::createFromFormat($formatoOrigen, $fecha);
+        return $fechaObjeto->format($formatoFinal);
+    }
+
+
 }

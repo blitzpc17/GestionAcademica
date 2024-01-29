@@ -107,8 +107,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::post('save', [ProcedimientosController::class, 'save'])->name('procedimientos.save');
             Route::post('del', [ProcedimientosController::class, 'delete'])->name('procedimientos.del');
             Route::get('recurso/download', [ProcedimientosController::class, 'DescargarArchivos'])->name('procedimientos.download');
+
+            /* *** envio de procedimientos *** */
+            Route::get('pre/envio', [ProcedimientosController::class, 'VisualizarDestinos'])->name('procedimientos.pre.envio');
+            Route::post('save/envio', [ProcedimientosController::class, 'EnvioADestino'])->name('procedimientos.save.envio');
+            Route::get('rol/recibidos', [ProcedimientosController::class, 'RecepcionProcedimientos'])->name('procedimientos.rol.recibidos');
+            Route::get('docs/listar/rol', [ProcedimientosController::class, 'ListarDocumentosRol'])->name('procedimientos.listar.rol');
+            Route::get('docs/ver', [ProcedimientosController::class, 'VisualizarDocumentosUsuario'])->name('procedimientos.visualizar');
+
+
         });
    
+
+        
 
 
 

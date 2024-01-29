@@ -12,7 +12,7 @@ class Procedimiento extends Model
     protected $table =  "procedimientos";
     protected $primaryKey = "id";
 
-    protected $fillable = ['iso', 'codigo', 'formato', 'layout', 'entregable'];
+    protected $fillable = ['iso', 'codigo', 'formato', 'layout', 'entregable', 'RolId', 'fechaLimiteVisualizacion'];
 
     
 }
